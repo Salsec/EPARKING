@@ -145,7 +145,7 @@ def reservation_page(request):
             for i in range(len(etat_place)):
                 if etat_place[i] == '0':
                     tab.append(i)
-            if len(tab) >= nombre_place:
+            if len(tab) >= nombre_place and nombre_place > 1:
                 resevation = Reservation.objects.create(nombre_place=nombre_place,
                                                         places_octroyer=' '.join(tab),
                                                         m_Parking=m_Parking,
@@ -158,6 +158,16 @@ def reservation_page(request):
                                        'compte une fois le paiement effectué. Vous disposé '
                                        'de 15 minutes pour effectuer le paiement ')
                 return redirect('systeme:paiement')
+            elif len(tab) >= nombre_place and nombre_place == 1:
+                etat_place[tab[0]] = '2'
+                resevation = Reservation.objects.create(nombre_place=nombre_place,
+                                                        places_octroyer=' '.join(tab),
+                                                        m_Parking=m_Parking,
+                                                        m_User=request.user.id)
+                resevation.save()
+                messages.info(request, 'Votre réservation sera prise en '
+                                       'compte une fois le paiement effectué. Vous disposé '
+                                       'de 15 minutes pour effectuer le paiement ')
             else:
                 messages.error(request, 'Nous sommes desolé de ne pas pouvoire prendre'
                                         ' en compte votre demande, actuellement nos places '
@@ -167,10 +177,11 @@ def reservation_page(request):
     return render(request, 'system/reservation.html', context={'form': form,
                                                                'user_reservations': user_reservations})
 
-def reservation_qr_code(request, id):
+
+def reservation_qr_code(request, pk):
     if request.user.is_authenticated:
-        user_reservations = Reservation.objects.filter(id=id)
-        qr_codes = Gestion_reservation.objects.filter(reservation_id=id)
+        user_reservations = Reservation.objects.filter(id=pk)
+        qr_codes = Gestion_reservation.objects.filter(reservation_id=pk)
         context = {
             'qr_codes': qr_codes,
             'user_reservations': user_reservations

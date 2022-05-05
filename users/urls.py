@@ -22,7 +22,7 @@ from . import views
 
 app_name = 'users'
 urlpatterns = [
-    path('/', views.login_page, name='login_page'),
+    path('', views.login_page, name='login_page'),
     path('signup/', views.signup, name='signup'),
     path('homee/', views.acceil, name='homee'),
     path('logout_user/', views.logout_user, name='logout_user'),

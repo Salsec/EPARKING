@@ -23,27 +23,20 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <!-- Add icons to the links using the .nav-icon class
-                with font-awesome or any other icon font library -->
-
             <li class="nav-item">
-
               <a href="" class="nav-link {% if request.path == homee %} active {% endif %}">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+               <i class='fas fa-car' style='font-size:24px'></i>
                 <p>
-                  Home
+                  STATIONNEMENT
                 </p>
               </a>
             </li>
-
-
-
             <li class="nav-item">
-
-              <a href="" class="nav-link {% if request.path == manage_course %} active {% endif %} {% if request.path == edit_course %} active {% endif %}">
-                <i class="nav-icon fas fa-chalkboard"></i>
+             {% url 'systeme:reserv' as reservation_park %}
+              <a href="{{ reservation_park }}" class="nav-link {% if request.path == reservation_park %} active {% endif %}">
+                <i class="nav-icon fas fa-chalkboard" style='font-size:24px'></i>
                 <p>
-                  Manage Course
+                  RESERVATION
                 </p>
               </a>
             </li>
@@ -51,9 +44,9 @@
             <li class="nav-item">
 
               <a href="" class="nav-link {% if request.path == manage_subject %} active {% endif %} {% if request.path == edit_subject %} active {% endif %}">
-                <i class="nav-icon fas fa-book"></i>
+                <i class='fas fa-book' style='font-size:24px'></i>
                 <p>
-                  Manage Subject
+                  ABONNEMENT
                 </p>
               </a>
             </li>
@@ -62,9 +55,9 @@
               <li class="nav-item">
 
               <a href="" class="nav-link {% if request.path == manage_subject %} active {% endif %} {% if request.path == edit_subject %} active {% endif %}">
-                <i class="nav-icon fas fa-book"></i>
+                <i class='far fa-money-bill-alt' style='font-size:24px'></i>
                 <p>
-                  Manage Subject
+                  PAIEMENT
                 </p>
               </a>
             </li>
