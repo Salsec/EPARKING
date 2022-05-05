@@ -6,8 +6,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 import users
 from EPARKING import settings
-from systeme.forms import ReservationForm
-from systeme.models import Parking, Reservation, Stationnement, Gestion_reservation
+from systeme.forms import ReservationForm, AbonnementForm
+from systeme.models import Parking, Reservation, Stationnement, Gestion_reservation, Abonnement
 from systeme.qrcode import read_qr_code
 from users.models import User
 
@@ -132,42 +132,36 @@ def entrer_stationnement(request, signal):
             return redirect('systeme:systeme')
 
 
+def place_vide():
+    tab = []
+    table = creat_table()
+    etat_place = list(table.values())
+    for i in range(len(etat_place)):
+        if etat_place[i] == '0':
+            tab.append(i)
+    return tab, etat_place
+
+
 def reservation_page(request):
     form = ReservationForm()
     if request.method == 'POST':
         form = ReservationForm(request.POST)
         if form.is_valid():
-            tab = []
             nombre_place = form.cleaned_data['nombre_place']
             m_Parking = form.cleaned_data['m_Parking']
-            table = creat_table()
-            etat_place = list(table.values())
-            for i in range(len(etat_place)):
-                if etat_place[i] == '0':
-                    tab.append(i)
-            if len(tab) >= nombre_place and nombre_place > 1:
+            tab, etat_place = place_vide()
+            if len(tab) >= nombre_place:
                 resevation = Reservation.objects.create(nombre_place=nombre_place,
                                                         places_octroyer=' '.join(tab),
                                                         m_Parking=m_Parking,
                                                         m_User=request.user.id)
                 resevation.save()
-                for i in range(nombre_place):
-                    etat_place[tab[i]] = '2'
-                    Gestion_reservation.objects.create(code=tab[i] + 1, reservation_id=resevation)
-                messages.info(request, 'Votre réservation sera prise en '
-                                       'compte une fois le paiement effectué. Vous disposé '
-                                       'de 15 minutes pour effectuer le paiement ')
+                # for i in range(nombre_place):
+                #     etat_place[int(tab[i])] = '2'
+                #     Gestion_reservation.objects.create(code=tab[i] + 1, reservation_id=resevation)
+                messages.info(request,
+                              'Votre reservation sera effective une fois le paiement effectuer!! Vous disposé de 15 minutes pour effectuer le paiement')
                 return redirect('systeme:paiement')
-            elif len(tab) >= nombre_place and nombre_place == 1:
-                etat_place[tab[0]] = '2'
-                resevation = Reservation.objects.create(nombre_place=nombre_place,
-                                                        places_octroyer=' '.join(tab),
-                                                        m_Parking=m_Parking,
-                                                        m_User=request.user.id)
-                resevation.save()
-                messages.info(request, 'Votre réservation sera prise en '
-                                       'compte une fois le paiement effectué. Vous disposé '
-                                       'de 15 minutes pour effectuer le paiement ')
             else:
                 messages.error(request, 'Nous sommes desolé de ne pas pouvoire prendre'
                                         ' en compte votre demande, actuellement nos places '
@@ -189,3 +183,31 @@ def reservation_qr_code(request, pk):
         return render(request, 'system/code_qr.html', context)
     else:
         return redirect('users:login_page')
+
+
+def abonnement(request):
+    form = AbonnementForm()
+    if request.method == 'POST':
+        form = AbonnementForm(request.POST)
+        if form.is_valid():
+            type_abonnement = form.cleaned_data['type_abonnement']
+            m_Parking = form.cleaned_data['m_Parking']
+            abonnement_anterieur = Abonnement.objects.filter(m_User=request.user.id).filter(m_Parking=m_Parking).filter(
+                status_abonnement=True)
+            if abonnement_anterieur:
+                messages.info(request, "Une abonnement pour le même parking est en cour, veillez attendre l'expiration")
+                return redirect('systeme:abonnement')
+            else:
+                abonnement = Abonnement.objects.create(type_abonnement=type_abonnement, m_Parking=m_Parking,
+                                                       m_User=request.user.id)
+                abonnement.save()
+                messages.info(request, 'Votre abonnement sera effective une fois le paiement effectuer')
+                return redirect('systeme:paiement')
+    # else:
+    #     return redirect('users:login_page')
+    user_abonnements = Abonnement.objects.filter(m_User=request.user.id).filter(status_abonnement=True)
+    context = {
+        'form': form,
+        'user_abonnements': user_abonnements
+    }
+    return render(request, 'system/abonnement.html', context)

@@ -27,4 +27,5 @@ urlpatterns = [
     path('hom', views.station_recent, name='hom'),
     path('reserv', views.reservation_page, name='reserv'),
     path('systeme', views.systeme, name='systeme'),
+    path('abonnement', views.abonnement, name='abonnement'),
 ]

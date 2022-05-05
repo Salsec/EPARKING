@@ -1,0 +1,84 @@
+{% extends 'new/base_template.html' %}
+{% load static %}
+{% block main_content %}
+<div class="wrapper">
+{% block side %}
+      {% include 'new/sidebar_template.html' %}
+{% endblock %}
+    <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h1><span class="badge bg-gradient-blue" style="alignment: center">   Ajouté un abonnement  </span></h1>
+                        <form action="" method="post" id="login-form">
+                            {% csrf_token %}
+                            <div class="card">
+                              <div class="card-body">
+                                  <div class="col" style="margin-bottom: 10px">
+                                    {{ form.type_abonnement }}
+                                  </div>
+                                  <div class="col" style="margin-bottom: 10px">
+                                    {{ form.m_Parking }}
+                                  </div>
+                                  <div class="col" style="margin-bottom: 10px">
+                                    <input type="submit" class="btn btn-primary form-control">
+                                  </div>
+                              </div>
+                            </div>
+                        </form>
+                        </div>
+
+                  <div class="col-sm-8">
+                  <h1><span class="badge bg-gradient-blue">Liste des abonnements actifs</span></h1>
+
+                    <div class="card">
+                      <div class="card-body">
+                        <table class="table table-dark table-hover">
+                            {% for user_abonnement in user_abonnements %}
+                                    <tr>
+                                      <th scope="row">{{ user_abonnement.date_debut_abonnement }}</th>
+                                        <td>{{ user_abonnement.m_Parking.nom }}</td>
+                                      <td>{{ user_abonnement.montant_payer }}</td>
+                                      <td>{{ user_abonnement.nombre_place }}</td>
+                                        <td>{{ user_abonnement.date_fin_abonnement }}</td>
+                                    </tr>
+                                </tbody>
+                            {% endfor %}
+                        </table>
+
+
+                      </div>
+                    </div>
+                  </div>
+                </form>
+            </div>
+    </section>
+</div>
+{% endblock main_content %}
+{% block custom_js %}
+                {% for message in messages %}
+                    {% if message.tags != info %}
+                        <script>
+                            Swal.fire({
+                              position: 'center',
+                              icon: '{{ message.tags }}',
+                              title: '{{ message }}',
+                              showConfirmButton: false,
+                              timer: 3000
+                            })
+                        </script>
+                    {% else %}
+                        <script>
+                        Swal.fire({
+                          title: 'Custom animation with Animate.css',
+                          showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                          },
+                          hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                          }
+                        })
+                        </script>
+                    {% endif %}
+                {% endfor %}
+  {% endblock custom_js %}

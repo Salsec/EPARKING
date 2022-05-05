@@ -42,8 +42,8 @@
             </li>
 
             <li class="nav-item">
-
-              <a href="" class="nav-link {% if request.path == manage_subject %} active {% endif %} {% if request.path == edit_subject %} active {% endif %}">
+            {% url 'systeme:abonnement' as abonnement_url %}
+              <a href="{{ abonnement_url }}" class="nav-link {% if request.path == abonnement_url %} active {% endif %}">
                 <i class='fas fa-book' style='font-size:24px'></i>
                 <p>
                   ABONNEMENT
