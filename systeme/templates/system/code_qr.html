@@ -1,0 +1,75 @@
+{% extends 'new/base_template.html' %}
+{% load static %}
+{% block main_content %}
+<div class="wrapper">
+{% block side %}
+      {% include 'new/sidebar_template.html' %}
+{% endblock %}
+    <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="card">
+                      <div class="card-body">
+                        <table class="table table-dark table-hover">
+                            {% for user_reservation in user_reservations %}
+                                 <tbody>
+                                    <tr>
+                                      <th scope="row">{{ user_reservation.date_reservation }}</th>
+                                        <td>{{ user_reservation.m_Parking.nom }}</td>
+                                      <td>{{ user_reservation.m_Paiement.montant_payer }}</td>
+                                      <td>{{ user_reservation.nombre_place }}</td>
+                                        <td>{{ user_reservation.places_octroyer }}</td>
+                                    </tr>
+                                </tbody>
+                            {% endfor %}
+                        </table>
+                      </div>
+                     </div>
+                    </div>
+                <div class="col-sm-12">
+                    <div class="card">
+                      <div class="card-body">
+                        {% for qr_code in qr_codes %}
+                             <div class="col-3">
+                                <h4>Place {{ qr_code.code }}</h4>
+                                <img src="{{ qr_code.qr_image }}" class="rounded float-start" alt="...">
+                                <a href="" class="button">Donload</a>>
+                            </div>
+                        {% endfor %}
+                      </div>
+                     </div>
+                    </div>
+                  </div>
+                </form>
+            </div>
+    </section>
+</div>
+{% endblock main_content %}
+{% block custom_js %}
+                {% for message in messages %}
+                    {% if message.tags != info %}
+                        <script>
+                            Swal.fire({
+                              position: 'center',
+                              icon: '{{ message.tags }}',
+                              title: '{{ message }}',
+                              showConfirmButton: false,
+                              timer: 3000
+                            })
+                        </script>
+                    {% else %}
+                        <script>
+                        Swal.fire({
+                          title: 'Custom animation with Animate.css',
+                          showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                          },
+                          hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                          }
+                        })
+                        </script>
+                    {% endif %}
+                {% endfor %}
+  {% endblock custom_js %}

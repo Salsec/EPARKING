@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      img {
+        display: block;
+      }
+      input {
+        display: inline-block;
+        float: right;
+        padding: 0.6rem 1rem 0.5rem;
+        margin-top: 1.5rem;
+        font-size: 1rem;
+        background: #e9fdf8;
+        border: 2px solid #4db699;
+        border-radius: 0.4rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="https://www.sheets-pratique.com/template/img/fr/logo.png" alt="logo">
+    {{ message }}
+    <input type="button" value="Fermer" onclick="google.script.host.close()">
+  </body>
+</html>

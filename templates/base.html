@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale1.0"/>
+    <link rel="stylesheet" href="{% static 'user/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'user/css/font-awesome.min.css' %}">
+    <meta charset="UTF-8">
+    {% block style %}
+    {% endblock %}
+</head>
+<body>
+{% block content %}
+{% endblock %}
+<script src="{% static 'user/js/jquery.js' %}"></script>
+<script src="{% static 'user/js/popper.js' %}"></script>
+<script src="{% static 'user/js/bootstrap.js' %}"></script>
+
+
+</body>
+</html>

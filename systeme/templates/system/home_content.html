@@ -1,0 +1,106 @@
+{% extends 'system/base_template.html' %}
+{% load static %}
+{% block main_content %}
+<div class="wrapper">
+    {% block side %}
+      {% include 'system/sidebar_template.html' %}
+  {% endblock %}
+<section class="content">
+        <div class="container-fluid">
+
+          <!-- Small boxes (Stat box) -->
+          <div class="row">
+              {%  for place, etat in places.items %}
+                  {% if etat == '0' %}
+                  <a href="" class="">
+            <div class="col-lg-3 col-6">
+              <div class="small-box bg-success">
+                <div class="inner">
+
+                  <h3>{{ place }}</h3>
+                  <h2 style="text-align: center">VIDE</h2>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-car"></i>
+                </div>
+                <a href="" class="small-box-footer">
+                    <i class='fas fa-sync-alt'></i>
+                </a>
+              </div>
+            </div>
+                  </a>
+                  {% elif etat == '1' %}
+                  <a href="" class="">
+            <div class="col-lg-3 col-6">
+              <div class="small-box bg-danger">
+                <div class="inner">
+
+                  <h3>{{ place }}</h3>
+                  <h2  style="text-align: center">OCCUPER</h2>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-car"></i>
+                </div>
+                <a href="" class="small-box-footer">
+                    <i class='fas fa-sync-alt'></i>
+                </a>
+              </div>
+            </div>
+                  </a>
+                  {% elif etat == '2' %}
+                  <a href="" class="">
+            <div class="col-lg-3 col-6">
+              <div class="small-box bg-info">
+                <div class="inner">
+
+                  <h3>{{ place }}</h3>
+                  <h2 style="text-align: center;color: #FFFFFF">RESERVER</h2>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-car"></i>
+                </div>
+                <a href="" class="small-box-footer">
+                    <i class='fas fa-sync-alt'></i>
+                </a>
+              </div>
+            </div>
+                  </a>
+                  {% endif %}
+              {% endfor %}
+            
+          </div>
+
+    </div>
+      </section>
+
+  {% endblock main_content %}
+
+  {% block custom_js %}
+
+                {% for message in messages %}
+                    {% if message.tags != info %}
+                        <script>
+                            Swal.fire({
+                              position: 'center',
+                              icon: '{{ message.tags }}',
+                              title: '{{ message }}',
+                              showConfirmButton: false,
+                              timer: 3000
+                            })
+                        </script>
+                    {% else %}
+                        <script>
+                        Swal.fire({
+                          title: 'Custom animation with Animate.css',
+                          showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                          },
+                          hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                          }
+                        })
+                        </script>
+                    {% endif %}
+                {% endfor %}
+  {% endblock custom_js %}
+Dynamsoft.DBR.BarcodeReader.license = 'DLS2eyJoYW5kc2hha2VDb2RlIjoiMTAxMDIxNzczLVRYbFhaV0pRY205cSIsIm9yZ2FuaXphdGlvbklEIjoiMTAxMDIxNzczIn0=';

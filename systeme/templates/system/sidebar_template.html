@@ -1,0 +1,36 @@
+{% load static %}
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <a href="" class="brand-link">
+        <img src="{% static 'clients/dist/img/54474.jpg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            style="opacity: .8">
+        <span class="brand-text font-weight-light">ENTRER PARKING</span>
+      </a>
+      <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="col-3" style="margin-left: 50px">
+            <a href="{% url 'users:station' 1 %}" class="btn btn-lg badge-success">Stationner</a>
+          </div>
+        </div>
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item">
+                {% for station in stations %}
+                  <div class="small-box bg-info">
+                    <div class="inner">
+                      <h4>PLACE N: {{ station.numero_place }}</h4>
+                      <p>Ocuper par {{ station.m_User.first_name }} {{ station.m_User.last_name }}</p>
+                    </div>
+                    <div class="icon">
+                      <i class="fa fa-car"></i>
+                    </div>
+                    <a href="" class="small-box-footer">
+                        <i class='fas fa-sync-alt'></i>
+                    </a>
+                  </div>
+                {% endfor %}
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
