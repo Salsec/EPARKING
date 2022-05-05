@@ -9,6 +9,13 @@ from django.core.files import File
 
 from users.models import User
 
+CHOICES_TYPE = [
+    ('0', '---------'),
+    ('1', 'Mensuel'),
+    ('3', 'Trimestriel'),
+    ('6', 'Semestriel'),
+    ('12', 'Annuel'),
+]
 
 class Parking(models.Model):
     nom = models.CharField(max_length=50, null=False)
@@ -67,20 +74,15 @@ class Reservation(models.Model):
 
 
 class Abonnement(models.Model):
-    CHOICES = [
-        ('1', 'Mensuel'),
-        ('3', 'Trimestriel'),
-        ('6', 'Semestriel'),
-        ('12', 'Annuel'),
-    ]
+
     date_debut_abonnement = models.DateTimeField(auto_now_add=True)
     date_fin_abonnement = models.DateTimeField(blank=True, null=True)
-    status_abonnement = models.BooleanField(default=True)
-    type_abonnement = models.CharField(max_length=30, choices=CHOICES)
+    status_abonnement = models.BooleanField(default=False)
+    type_abonnement = models.CharField(max_length=30, choices=CHOICES_TYPE)
 
     m_Parking = models.ForeignKey(Parking, on_delete=models.CASCADE)
 
-    m_Paiement = models.ForeignKey(Paiement, on_delete=models.CASCADE)
+    m_Paiement = models.ForeignKey(Paiement, blank=True, null=True, on_delete=models.CASCADE)
 
     m_User = models.ForeignKey(User, on_delete=models.CASCADE)
 
