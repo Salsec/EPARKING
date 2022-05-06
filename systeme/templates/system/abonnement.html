@@ -10,46 +10,48 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <h1><span class="badge bg-gradient-blue" style="alignment: center">   Ajouté un abonnement  </span></h1>
-                            <form action="" method="post" id="login-form">
-                                {% csrf_token %}
-                                <div class="card">
-                                  <div class="card-body">
-                                      <div class="col" style="margin-bottom: 10px">
-                                        {{ form.type_abonnement }}
-                                      </div>
-                                      <div class="col" style="margin-bottom: 10px">
-                                        {{ form.m_Parking }}
-                                      </div>
-                                      <div class="col" style="margin-bottom: 10px">
-                                        <input type="submit" class="btn btn-primary form-control">
-                                      </div>
+                        <form action="" method="post" id="login-form">
+                            {% csrf_token %}
+                            <div class="card">
+                              <div class="card-body">
+                                  <div class="col" style="margin-bottom: 10px">
+                                    {{ form.type_abonnement }}
                                   </div>
-                                </div>
-                            </form>
-                    </div>
+                                  <div class="col" style="margin-bottom: 10px">
+                                    {{ form.m_Parking }}
+                                  </div>
+                                  <div class="col" style="margin-bottom: 10px">
+                                    <input type="submit" class="btn btn-primary form-control">
+                                  </div>
+                              </div>
+                            </div>
+                        </form>
+                        </div>
 
                   <div class="col-sm-8">
-                     <h1><span class="badge bg-gradient-blue">Liste des abonnements actifs</span></h1>
+                  <h1><span class="badge bg-gradient-blue">Liste des abonnements actifs</span></h1>
+
                     <div class="card">
                       <div class="card-body">
                         <table class="table table-dark table-hover">
-                             <tbody>
-                                {% for user_abonnement in user_abonnements %}
-                                        <tr>
-                                          <th scope="row">{{ user_abonnement.date_debut_abonnement }}</th>
-                                            <td>{{ user_abonnement.m_Parking.nom }}</td>
-                                          <td>{{ user_abonnement.montant_payer }}</td>
-                                          <td>{{ user_abonnement.nombre_place }}</td>
-                                            <td>{{ user_abonnement.date_fin_abonnement }}</td>
-                                        </tr>
-                                {% endfor %}
-                             </tbody>
+                            {% for user_abonnement in user_abonnements %}
+                                    <tr>
+                                      <th scope="row">{{ user_abonnement.date_debut_abonnement }}</th>
+                                        <td>{{ user_abonnement.m_Parking.nom }}</td>
+                                      <td>{{ user_abonnement.montant_payer }}</td>
+                                      <td>{{ user_abonnement.nombre_place }}</td>
+                                        <td>{{ user_abonnement.date_fin_abonnement }}</td>
+                                    </tr>
+                                </tbody>
+                            {% endfor %}
                         </table>
+
+
                       </div>
                     </div>
                   </div>
+                </form>
             </div>
-        </div>
     </section>
 </div>
 {% endblock main_content %}

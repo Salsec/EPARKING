@@ -28,5 +28,4 @@ urlpatterns = [
     path('reserv', views.reservation_page, name='reserv'),
     path('systeme', views.systeme, name='systeme'),
     path('abonnement', views.abonnement, name='abonnement'),
-    path('paiement/<str:signal>/<str:type_abonnement>/<str:m_Parking>/', views.paiement_page, name='paiement'),
 ]

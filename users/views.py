@@ -21,9 +21,14 @@ def re_404(request):
     return render(request, '404.html')
 
 
+def admin_page(request):
+    if not request.user.is_authenticated:
+        return redirect('users:login_page')
+    return render(request, 'new/admin_page.html')
+
+
 # views.py
 def login_page(request):
-    form = forms.LoginForm()
     message = ''
     if request.method == 'POST':
         form = forms.LoginForm(request.POST)
@@ -33,14 +38,16 @@ def login_page(request):
                 login(request, user)
                 if user.is_superuser:
                     return redirect('admin:index')
+                elif user.is_staff:
+                    return redirect('users:administrator')
                 else:
                     return redirect('users:homee')
             else:
                 message = messages.error(request, "Identifiants invalides!")
         else:
             message = messages.error(request, "Identifiants invalides!")
-    # else:
-    #     return redirect('404')
+    else:
+        form = forms.LoginForm()
 
     return render(request, 'new/login.html', context={'form': form, 'message': message})
 

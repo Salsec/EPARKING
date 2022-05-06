@@ -30,9 +30,13 @@ class Parking(models.Model):
 
 
 class Paiement(models.Model):
+    CHOICES = [
+        ('1', 'Carte de crédit'),
+        ('2', 'Mobile monney'),
+        ('3', 'Compte banquaire'),
+    ]
     montant_payer = models.IntegerField(default=0)
-    moyen_paiement = models.CharField(max_length=60)
-    numero_tel = models.IntegerField(default=0)
+    moyen_paiement = models.CharField(max_length=60, choices=CHOICES)
     date_paiement = models.DateTimeField(auto_now_add=True)
 
 
@@ -64,6 +68,9 @@ class Reservation(models.Model):
     m_Parking = models.ForeignKey(Parking, on_delete=models.CASCADE)
 
     m_Paiement = models.ForeignKey(Paiement, null=True, blank=True, on_delete=models.CASCADE)
+
+    def create_reservation(self, *args, **kwargs):
+        pass
 
 
 class Abonnement(models.Model):
