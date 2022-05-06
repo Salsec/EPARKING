@@ -2,7 +2,8 @@
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
-      <a href="" class="brand-link">
+    {% url 'users:homee' as home_url_user %}
+      <a href="{{ home_url_user }}" class="brand-link">
         <img src="{% static 'client/dist/img/54474.jpg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8">
         <span class="brand-text font-weight-light">CLIENT</span>
@@ -51,10 +52,9 @@
               </a>
             </li>
 
-
               <li class="nav-item">
-
-              <a href="" class="nav-link {% if request.path == manage_subject %} active {% endif %} {% if request.path == edit_subject %} active {% endif %}">
+              {% url 'systeme:paiement' as paiement_url %}
+              <a href="{{ paiement_url }}" class="nav-link {% if request.path == paiement_url %} active {% endif %} ">
                 <i class='far fa-money-bill-alt' style='font-size:24px'></i>
                 <p>
                   PAIEMENT

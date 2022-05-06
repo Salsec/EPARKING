@@ -1,5 +1,5 @@
 from datetime import date
-
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -11,7 +11,9 @@ from systeme.models import Parking, Reservation, Stationnement, Gestion_reservat
 from systeme.qrcode import read_qr_code
 from users.models import User
 
-
+RESERVATION="2reserv2"
+ABONNEMENT="3abonn3"
+STATIONNEMENT="1staion1"
 def essai(request):
     return render(request, 'qr.html')
 
@@ -142,6 +144,7 @@ def place_vide():
     return tab, etat_place
 
 
+@login_required
 def reservation_page(request):
     form = ReservationForm()
     if request.method == 'POST':
@@ -172,6 +175,7 @@ def reservation_page(request):
                                                                'user_reservations': user_reservations})
 
 
+@login_required
 def reservation_qr_code(request, pk):
     if request.user.is_authenticated:
         user_reservations = Reservation.objects.filter(id=pk)
@@ -185,6 +189,7 @@ def reservation_qr_code(request, pk):
         return redirect('users:login_page')
 
 
+@login_required
 def abonnement(request):
     form = AbonnementForm()
     if request.method == 'POST':
@@ -195,19 +200,21 @@ def abonnement(request):
             abonnement_anterieur = Abonnement.objects.filter(m_User=request.user.id).filter(m_Parking=m_Parking).filter(
                 status_abonnement=True)
             if abonnement_anterieur:
-                messages.info(request, "Une abonnement pour le même parking est en cour, veillez attendre l'expiration")
+                messages.info(request, "Un abonnement pour le même parking est en cour, veillez attendre l'expiration")
                 return redirect('systeme:abonnement')
             else:
-                abonnement = Abonnement.objects.create(type_abonnement=type_abonnement, m_Parking=m_Parking,
-                                                       m_User=request.user.id)
-                abonnement.save()
+
                 messages.info(request, 'Votre abonnement sera effective une fois le paiement effectuer')
-                return redirect('systeme:paiement')
-    # else:
-    #     return redirect('users:login_page')
+                return redirect('systeme:paiement', ABONNEMENT, type_abonnement, m_Parking)
     user_abonnements = Abonnement.objects.filter(m_User=request.user.id).filter(status_abonnement=True)
     context = {
         'form': form,
         'user_abonnements': user_abonnements
     }
     return render(request, 'system/abonnement.html', context)
+
+
+def paiement_page(request, signal, type_abonnement, m_Parking):
+    if signal == ABONNEMENT:
+        pass
+    return render(request, 'system/paiement.html')

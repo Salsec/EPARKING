@@ -31,6 +31,7 @@
                     <div class="card">
                       <div class="card-body">
                         <table class="table table-dark table-hover">
+                        </tbody>
                             {% for user_reservation in user_reservations %}
                                  <a href={% url 'systeme:reservation_detail' user_reservation.id %}>
                                     <tr>
@@ -41,15 +42,16 @@
                                         <td>{{ user_reservation.places_octroyer }}</td>
                                     </tr>
                                  </a>
-                                </tbody>
                             {% endfor %}
+                                </tbody>
+
                         </table>
 
 
                       </div>
                     </div>
                   </div>
-                </form>
+                </div>
             </div>
     </section>
 </div>
