@@ -1,10 +1,185 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'new/base_template.html' %}
+{% load static %}
+{% block main_content %}
+    <div class="wrapper">
+        {% block side %}
+            {% include 'new/sidebar_template.html' %}
+        {% endblock %}
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row justify-content-center align-items-center h-100">
+                    <div class="row" style="margin-bottom: 20px">
+                        <div class="col-auto">
+                            <label for="inputPassword6" class="col-form-label">Prix</label>
+                            <input type="password" class="form-control" id="inputPassword4">
+                        </div>
+                        <div class="col-auto">
+                            <label for="inputPassword6" class="col-form-label">Prix Total</label>
+                            <input type="password" class="form-control" id="inputPassword4">
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="container-fluid h-100 bg-light text-dark">
+                    <div class="row justify-content-center align-items-center h-100">
+
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                                        data-bs-target="#orange-money" type="button" role="tab" aria-controls="nav-home"
+                                        aria-selected="true">
+                                    <img src="{% static 'admin/img/gis/om.png' %}" class="rounded float-start"
+                                         alt="orange money" style="width: 180px; height: 70px">
+                                </button>
+                                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+                                        data-bs-target="#moov-money" type="button" role="tab"
+                                        aria-controls="nav-profile" aria-selected="false">
+                                    <img src="{% static 'admin/img/gis/unnamed.jpg' %}" class="rounded float-start"
+                                         alt="moov money" style="width: 200px; height: 70px">
+                                </button>
+                                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
+                                        data-bs-target="#coris-money" type="button" role="tab"
+                                        aria-controls="nav-contact" aria-selected="false">
+                                    <img src="{% static 'admin/img/gis/unnamed.png' %}" class="rounded float-start"
+                                         alt="coris money" style="width: 200px; height: 70px">
+                                </button>
+                                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
+                                        data-bs-target="#visa" type="button" role="tab" aria-controls="nav-contact"
+                                        aria-selected="false">
+                                    <img src="{% static 'admin/img/gis/images.png' %}" class="rounded float-start"
+                                         alt="visa" style="width: 200px; height: 70px">
+                                </button>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                <div class="container-fluid h-100 bg-light text-dark">
+                    <div class="row justify-content-center align-items-center h-100">
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="orange-money" role="tabpanel"
+                                 aria-labelledby="nav-home-tab">
+                                <form action="" method="post" style="margin-top: 30px">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label class="col-form-label">Numero Orange</label>
+                                        {{ form.numero }}
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" class="form-control" name="moyen" value="{{ 1 }}"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <button class="col btn btn-secondary float-left">
+                                                        Reset
+                                                    </button>
+                                                </div>
+                                                <div class="col">
+                                                    <button class="col btn btn-primary float-right">
+                                                        Submit
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                            <div class="tab-pane fade" id="moov-money" role="tabpanel"
+                                 aria-labelledby="nav-profile-tab">
+                                <form action="" style="margin-top: 30px">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Numero Moov</label>
+                                        <input type="text" class="form-control"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" class="form-control" value="2"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <button class="col btn btn-secondary float-left">
+                                                        Reset
+                                                    </button>
+                                                </div>
+                                                <div class="col">
+                                                    <button class="col btn btn-primary float-right">
+                                                        Submit
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="coris-money" role="tabpanel"
+                                 aria-labelledby="nav-contact-tab">
+                                <form action="" style="margin-top: 30px">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Numero Coris Money</label>
+                                        <input type="text" class="form-control"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" class="form-control" value="3"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <button class="col btn btn-secondary float-left">
+                                                        Reset
+                                                    </button>
+                                                </div>
+                                                <div class="col">
+                                                    <button class="col btn btn-primary float-right">
+                                                        Submit
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="visa" role="tabpanel" aria-labelledby="nav-contact-tab">...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+    </div>
+{% endblock main_content %}
+{% block custom_js %}
+    {% for message in messages %}
+        {% if message.tags != info %}
+            <script>
+                Swal.fire({
+                    position: 'center',
+                    icon: '{{ message.tags }}',
+                    title: '{{ message }}',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+            </script>
+        {% else %}
+            <script>
+                Swal.fire({
+                    title: 'Custom animation with Animate.css',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    }
+                })
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endblock custom_js %}

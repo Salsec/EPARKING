@@ -21,11 +21,12 @@ from . import views
 app_name = 'systeme'
 urlpatterns = [
     # path('', views.login_page, name='login_page'),
-    path('station_entrer/<str:signal>/', views.entrer_stationnement, name='station_entrer'),
+    path('station_entrer/<str:signal>/', views.stationnement, name='station_entrer'),
     path('reservation_detail/<str:pk>/', views.reservation_qr_code, name='reservation_detail'),
     path('home', views.read_qr_code, name='home'),
     path('hom', views.station_recent, name='hom'),
     path('reserv', views.reservation_page, name='reserv'),
     path('systeme', views.systeme, name='systeme'),
     path('abonnement', views.abonnement, name='abonnement'),
+    path('paiement/<str:signal>/<str:types>/<str:park>/', views.paiement_page, name='paiement'),
 ]

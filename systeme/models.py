@@ -1,3 +1,4 @@
+import datetime
 import random
 from io import BytesIO
 
@@ -30,13 +31,9 @@ class Parking(models.Model):
 
 
 class Paiement(models.Model):
-    CHOICES = [
-        ('1', 'Carte de crédit'),
-        ('2', 'Mobile monney'),
-        ('3', 'Compte banquaire'),
-    ]
     montant_payer = models.IntegerField(default=0)
-    moyen_paiement = models.CharField(max_length=60, choices=CHOICES)
+    moyen_paiement = models.CharField(max_length=60)
+    numero = models.IntegerField(default=0)
     date_paiement = models.DateTimeField(auto_now_add=True)
 
 
@@ -48,7 +45,7 @@ class Guichet(models.Model):
 
 class Stationnement(models.Model):
     numero_place = models.IntegerField(default=0)
-    heure_entrer = models.DateTimeField(auto_now_add=True, verbose_name="Heure d'entré")
+    heure_entrer = models.DateTimeField(default=datetime.datetime.now(), verbose_name="Heure d'entré")
     status_stationnement = models.BooleanField(default=True)
     heure_sortie = models.DateTimeField(blank=True, null=True, verbose_name='heure de sortie')
     m_Paiement = models.ForeignKey(Paiement, on_delete=models.CASCADE, null=True, blank=True)
@@ -56,6 +53,9 @@ class Stationnement(models.Model):
     m_Parking = models.ForeignKey(Parking, on_delete=models.CASCADE, )
 
     m_User = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.m_User.username +" "+self.m_Parking.nom
 
 
 class Reservation(models.Model):
@@ -76,7 +76,7 @@ class Reservation(models.Model):
 class Abonnement(models.Model):
 
     date_debut_abonnement = models.DateTimeField(auto_now_add=True)
-    date_fin_abonnement = models.DateTimeField(blank=True, null=True)
+    date_fin_abonnement = models.DateField(null=True, blank=True)
     status_abonnement = models.BooleanField(default=False)
     type_abonnement = models.CharField(max_length=30, choices=CHOICES_TYPE)
 
