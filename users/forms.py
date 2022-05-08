@@ -48,4 +48,11 @@ class SignupForm(forms.Form):
             raise forms.ValidationError("The passwords you entered did not match")
 
 
+class UpdateForm(forms.ModelForm):
+   class Meta:
+       model = User
+       exclude = ('password', 'password_conf') 
+       fields = ('email','username','first_name','last_name','telephone')
+
+
 
