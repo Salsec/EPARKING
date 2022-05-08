@@ -24,7 +24,8 @@
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
-              <a href="" class="nav-link {% if request.path == homee %} active {% endif %}">
+            {% url 'systeme:stationnement_page' as stationnement_pageçurl %}
+              <a href="{{ stationnement_pageçurl }}" class="nav-link {% if request.path == stationnement_pageçurl %} active {% endif %}">
                <i class='fas fa-car' style='font-size:24px'></i>
                 <p>
                   STATIONNEMENT
@@ -51,16 +52,6 @@
               </a>
             </li>
 
-
-              <li class="nav-item">
-
-              <a href="" class="nav-link {% if request.path == manage_subject %} active {% endif %} {% if request.path == edit_subject %} active {% endif %}">
-                <i class='far fa-money-bill-alt' style='font-size:24px'></i>
-                <p>
-                  PAIEMENT
-                </p>
-              </a>
-            </li>
 
           </ul>
         </nav>

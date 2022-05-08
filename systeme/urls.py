@@ -17,6 +17,8 @@ Including another URLconf
 from django.urls import path
 
 from . import views
+from django.conf.urls.static import static
+from EPARKING import settings
 
 app_name = 'systeme'
 urlpatterns = [
@@ -28,5 +30,6 @@ urlpatterns = [
     path('reserv', views.reservation_page, name='reserv'),
     path('systeme', views.systeme, name='systeme'),
     path('abonnement', views.abonnement, name='abonnement'),
+    path('stationnement_page', views.stationnement_page, name='stationnement_page'),
     path('paiement/<str:signal>/<str:types>/<str:park>/', views.paiement_page, name='paiement'),
 ]

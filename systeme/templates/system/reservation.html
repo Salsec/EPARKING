@@ -30,26 +30,43 @@
                   <div class="col-sm-8">
                     <div class="card">
                       <div class="card-body">
-                        <table class="table table-dark table-hover">
-                            {% for user_reservation in user_reservations %}
-                                 <a href={% url 'systeme:reservation_detail' user_reservation.id %}>
-                                    <tr>
-                                      <th scope="row">{{ user_reservation.date_reservation }}</th>
-                                        <td>{{ user_reservation.m_Parking.nom }}</td>
-                                      <td>{{ user_reservation.m_Paiement.montant_payer }}</td>
-                                      <td>{{ user_reservation.nombre_place }}</td>
-                                        <td>{{ user_reservation.places_octroyer }}</td>
-                                    </tr>
-                                 </a>
-                                </tbody>
-                            {% endfor %}
-                        </table>
+                      {% for user_reservation in user_reservations %}
+                      {% if user_reservations %}
+                                <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true" aria-controls="collapseExample">
+                                    <div class="row" style="background: #0536f3;border-radius: 3px;color: #FFFFFF">
+                                        <div class="col"></div>
+                                        <div class="col">{{ user_reservation.date_reservation }}</div>
+                                        <div class="col">{{ user_reservation.m_Parking.nom }}</div>
+                                        <div class="col">{{ user_reservation.nombre_place }}</div>
+                                        <div class="col">{{ user_reservation.m_Paiement.montant_payer}} FCFA</div>
+                                    </div>
+                                </a>
 
 
+
+                                 <div class="collapse" id="collapseExample" style="margin-top: 10px">
+                                      <div class="card card-body">
+
+                                          <div class="row">
+                                           {% for reserv in gestion_reserves %}
+                                {% if reserv.qr_image and reserv.reservation_id == user_reservation%}
+                                          <div class="col-sm-3">
+                                                  <h4 style="text-align: center;font-family: sans-serif">Pace {{ reserv.code }}</h4>
+                                                  <img src="{% get_media_prefix %}{{ reserv.qr_image }}" class="rounded" alt="..." style="width: 150px;height: 150px">
+                                                   <a class="btn btn-lg btn-info" style="alignment: center" href="{{ reserv.qr_image.url }}" download=""><i class="fa fa-download"></i>Download</a>
+                                          </div>
+                                    {% endif %}
+                                                {% endfor %}
+                                              </div>
+                                      </div>
+                                 </div>
+                          {% endif %}
+                          {% endfor %}
                       </div>
                     </div>
                   </div>
-                </form>
+
+            </div>
             </div>
     </section>
 </div>

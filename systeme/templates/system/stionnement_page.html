@@ -1,0 +1,71 @@
+{% extends 'new/base_template.html' %}
+{% load static %}
+{% block main_content %}
+<div class="wrapper">
+{% block side %}
+      {% include 'new/sidebar_template.html' %}
+{% endblock %}
+    <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                  <div class="col-sm-12">
+                  {% if stations %}
+                    <div class="card">
+                      <div class="card-body">
+                        <table class="table table-hover">
+                            {% for station in stations %}
+                                <tbody>
+                                    <tr style="{% if station.m_Paiement == None %} background-color: #e1052d {% else %} background-color: #04bb33 {% endif %}">
+                                      <th scope="row">{{ station.numero_place }}</th>
+                                        <td>{{ station.m_Parking.nom }}</td>
+                                        {% if station.m_Paiement != None %}
+                                      <td>{{ station.m_Paiement.montant_payer }} FCFA</td>
+                                         {% endif %}
+                                         <td>
+                                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                                 <a class="btn btn-outline-primary btn-lg " href="{% url 'systeme:paiement' "1staion1" 1 station.m_Parking %}" role="button">Link</a>
+                                             </div>
+                                         </td>
+                                    </tr>
+                                </tbody>
+                            {% endfor %}
+                        </table>
+                      </div>
+                    </div>
+                  {% else %}
+
+                  <h6> Pas de stationnement en cour</h6>
+                {% endif %}
+                  </div>
+                </div>
+            </div>
+    </section>
+</div>
+{% endblock main_content %}
+{% block custom_js %}
+                {% for message in messages %}
+                    {% if message.tags != info %}
+                        <script>
+                            Swal.fire({
+                              position: 'center',
+                              icon: '{{ message.tags }}',
+                              title: '{{ message }}',
+                              showConfirmButton: false,
+                              timer: 3000
+                            })
+                        </script>
+                    {% else %}
+                        <script>
+                        Swal.fire({
+                          title: 'Custom animation with Animate.css',
+                          showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                          },
+                          hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                          }
+                        })
+                        </script>
+                    {% endif %}
+                {% endfor %}
+  {% endblock custom_js %}
