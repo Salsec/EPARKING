@@ -41,7 +41,7 @@ def login_page(request):
                 elif user.is_staff:
                     return redirect('users:administrator')
                 else:
-                    return redirect('users:homee')
+                    return redirect('systeme:stationnement_page')
             else:
                 message = messages.error(request, "Identifiants invalides!")
         else:

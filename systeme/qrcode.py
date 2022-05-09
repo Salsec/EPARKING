@@ -5,6 +5,7 @@ from pyzbar.wrapper import ZBarSymbol
 
 
 def read_qr_code(signal):
+    global decode_data
     if signal:
         cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
         cap.set(3, 640)

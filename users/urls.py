@@ -19,7 +19,8 @@ from django.conf.urls.static import static
 
 from EPARKING import settings
 from . import views
-
+from django.conf.urls.static import static
+from EPARKING import settings
 app_name = 'users'
 urlpatterns = [
     path('', views.login_page, name='login_page'),

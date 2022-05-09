@@ -1,0 +1,58 @@
+{% extends 'new/base_template.html' %}
+{% load static %}
+{% block main_content %}
+<div class="wrapper">
+{% block side %}
+      {% include 'new/sidebar_template.html' %}
+{% endblock %}
+    <section class="content">
+            <div class="container-fluid">
+                <div class="row justify-content-md-center">
+                {% if user_requests %}
+                  <div class="col-md-4 justify-content-md-center">
+                      {% for user_request in user_requests %}
+                    <div class="card">
+                      <div class="card-body">
+                          <div class="container">
+                                  <h4 style="font-family: sans-serif"> {{ user_request.username}}</h4>
+                                  <img src="{% get_media_prefix %}{{ user_request.thumbnail }}" class="rounded" alt="..." style="width: 300px;height: 300px">
+                                   <a class="btn btn-lg btn-info " href="{{ user_request.thumbnail.url }}" download=""><i class="fa fa-download"></i>Download</a>
+                          </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                  </div>
+                {% endif %}
+            </div>
+            </div>
+    </section>
+</div>
+{% endblock main_content %}
+{% block custom_js %}
+                {% for message in messages %}
+                    {% if message.tags != info %}
+                        <script>
+                            Swal.fire({
+                              position: 'center',
+                              icon: '{{ message.tags }}',
+                              title: '{{ message }}',
+                              showConfirmButton: false,
+                              timer: 5000
+                            })
+                        </script>
+                    {% else %}
+                        <script>
+                        Swal.fire({
+                          title: 'Custom animation with Animate.css',
+                          showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                          },
+                          hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                          }
+                        })
+                        </script>
+                    {% endif %}
+                {% endfor %}
+    </div
+  {% endblock custom_js %}
