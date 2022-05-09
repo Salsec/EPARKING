@@ -23,11 +23,13 @@
 
 <!-- Container -->
 <div id="container">
-
+    <img src="{% static 'client/dist/img/54474.jpg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            style="opacity: .8;width: 20px;height: 20px">
     {% if not is_popup %}
     <!-- Header -->
     {% block header %}
     <div id="header">
+
         <div id="branding">
         {% block branding %}{% endblock %}
         </div>
@@ -35,8 +37,13 @@
         {% if has_permission %}
 
         {% endif %}
+
         {% endblock %}
-        {% block nav-global %}{% endblock %}
+
+        {% block nav-global %}
+
+        {% endblock %}
+
     </div>
     {% endblock %}
     <!-- END Header -->
