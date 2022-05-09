@@ -5,6 +5,7 @@
 {% load static %}
 
 <section class="content">
+<<<<<<< HEAD
     <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
@@ -37,15 +38,123 @@
                     <a href="" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
+=======
+
+    <div class="container-fluid">
+        {% if is_update %}
+        <div class="alert alert-danger" role="alert">
+            <h1>Modifier le compte de : {{ userUpdate.username }} ?</h1>
+        </div>
+
+        <form action="" method="post">
+            {% csrf_token %} {{form.as_p}}
+            <input type="submit" value="Enregistrer">
+        </form>
+        {% elif is_deleted %}
+        <div class="alert alert-danger" role="alert">
+            <h1>Etes-vous sûr de vouloir supprimer le compte de : {{ userDelete.username }} ?</h1>
+        </div>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Supprimer">
+        </form>
+        {% else %}
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-8">
+                <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+                    <div class="form-row">
+                        {{ form.email.errors }}
+                        {{ form.email.label_tag}} {{ form.email }}
+                    </div>
+                    <div class="form-row">
+                        {{ form.username.errors }}
+                        {{ form.username.label_tag}} {{ form.username }}
+                    </div>
+                    <div class="form-row">
+                        {{ form.first_name.errors }}
+                        {{ form.first_name.label_tag}} {{ form.first_name }}
+                    </div>
+
+                    <div class="form-row">
+                        {{ form.last_name.errors }}
+                        {{ form.last_name.label_tag }} {{ form.last_name }}
+                    </div>
+                    <div class="form-row">
+                        {{ form.telephone.errors }}
+                        {{ form.telephone.label_tag}} {{ form.telephone }}
+                    </div>
+                    <div class="form-row">
+                        {{ form.password.errors }}
+                        {{ form.password.label_tag }} {{ form.password }}
+                        <input type="hidden" name="next" value="{{ next }}">
+                    </div>
+                    <div class="form-row">
+                        {{ form.password_conf.errors }}
+                        {{ form.password.label_tag }} {{ form.password_conf }}
+                        <input type="hidden" name="next" value="{{ next }}">
+                    </div>
+                    {% url 'admin_password_reset' as password_reset_url %}
+                    {% if password_reset_url %}
+                    <div class="password-reset-link">
+                        {# <a href="{{ password_reset_url }}">{% translate 'Forgotten your password or username?'
+                            %}</a>#}
+                    </div>
+                    {% endif %}
+                    <div class="submit-row">
+                        <input type="submit" value="Enregistrer">
+                    </div>
+                </form>
+            </div>
+            <!-- ./col -->
+
+            <div class="col-4">
+                {% for client in clients%}
+                <!-- small box -->
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <p>{{ client.username | upper }}</p>
+                    </div>
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <!--<a href="" class="small-box-footer"> Modifier <i class="fas fa-arrow-circle-right"></i></a>-->
+                                <a href="{% url 'users:user-update' client.id %}" class="btn btn-success">Modifier</a>
+                            </div>
+                            <div class="col-6">
+                                <a href="{% url 'users:user-delete' client.id %}" class="btn btn-danger">Supprimer</a>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+>>>>>>> 07fecf520fd1b4483c659ad38f960b6dcd1d60fb
             <!-- ./col -->
 
 
         </div>
 
+<<<<<<< HEAD
 
     </div>
 </section>
 
+=======
+        {% endif %}
+    </div>
+
+</section>
+
+
+
+
+>>>>>>> 07fecf520fd1b4483c659ad38f960b6dcd1d60fb
 {% endblock main_content %}
 
 {% block custom_js %}
