@@ -8,18 +8,16 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row justify-content-center align-items-center h-100">
+
                     <div class="row" style="margin-bottom: 20px">
                         <div class="col-auto">
-                            <label for="inputPassword6" class="col-form-label">Prix</label>
-                            <input type="password" class="form-control" id="inputPassword4">
-                        </div>
-                        <div class="col-auto">
-                            <label for="inputPassword6" class="col-form-label">Prix Total</label>
-                            <input type="password" class="form-control" id="inputPassword4">
+
+                            <h1><span class="badge bg-primary">Prix Total: {{ somme }} FCFA</span></h1>
                         </div>
 
 
                     </div>
+
                 </div>
 
                 <div class="container-fluid h-100 bg-light text-dark">
@@ -60,7 +58,7 @@
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="orange-money" role="tabpanel"
                                  aria-labelledby="nav-home-tab">
-                                <form action="" method="post" style="margin-top: 30px">
+                                <form action="" method="post" id="form2" style="margin-top: 30px">
                                     {% csrf_token %}
                                     <div class="form-group">
                                         <label class="col-form-label">Numero Orange</label>
@@ -91,13 +89,14 @@
 
                             <div class="tab-pane fade" id="moov-money" role="tabpanel"
                                  aria-labelledby="nav-profile-tab">
-                                <form action="" style="margin-top: 30px">
+                                <form action="" method="post" id="form1" style="margin-top: 30px">
+                                    {% csrf_token %}
                                     <div class="form-group">
                                         <label class="col-form-label">Numero Moov</label>
-                                        <input type="text" class="form-control"/>
+                                        {{ form.numero }}
                                     </div>
                                     <div class="form-group">
-                                        <input type="hidden" class="form-control" value="2"/>
+                                        <input type="hidden" class="form-control" name="moyen" value="{{ 2 }}"/>
                                     </div>
                                     <div class="form-group">
                                         <div class="container">
@@ -119,26 +118,24 @@
                             </div>
                             <div class="tab-pane fade" id="coris-money" role="tabpanel"
                                  aria-labelledby="nav-contact-tab">
-                                <form action="" style="margin-top: 30px">
+                                <form action="" method="post" id="form3"style="margin-top: 30px">
+                                    {% csrf_token %}
                                     <div class="form-group">
                                         <label class="col-form-label">Numero Coris Money</label>
-                                        <input type="text" class="form-control"/>
+                                        {{ form.numero }}
                                     </div>
                                     <div class="form-group">
-                                        <input type="hidden" class="form-control" value="3"/>
+                                        <input type="hidden" class="form-control" name="moyen" value="{{ 3 }}"/>
                                     </div>
                                     <div class="form-group">
                                         <div class="container">
                                             <div class="row">
                                                 <div class="col">
-                                                    <button class="col btn btn-secondary float-left">
-                                                        Reset
-                                                    </button>
+                                                    <input  type="reset" class="col btn btn-secondary float-left" value="Reset">
+
                                                 </div>
                                                 <div class="col">
-                                                    <button class="col btn btn-primary float-right">
-                                                        Submit
-                                                    </button>
+                                                    <input type="submit" class="col btn btn-primary float-right" value=" Submit">
                                                 </div>
                                             </div>
                                         </div>

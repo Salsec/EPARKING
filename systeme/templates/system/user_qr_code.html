@@ -7,62 +7,22 @@
 {% endblock %}
     <section class="content">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <h1><span class="badge bg-gradient-blue" style="alignment: center">   Ajouté un abonnement  </span></h1>
-                        <form action="" method="post" id="login-form">
-                            {% csrf_token %}
-                            <div class="card">
-                              <div class="card-body">
-                                  <div class="col" style="margin-bottom: 10px">
-                                    {{ form.type_abonnement }}
-                                  </div>
-                                  <div class="col" style="margin-bottom: 10px">
-                                    {{ form.m_Parking }}
-                                  </div>
-                                  <div class="col" style="margin-bottom: 10px">
-                                    <input type="submit" class="btn btn-primary form-control">
-                                  </div>
-                              </div>
-                            </div>
-                        </form>
-                        </div>
-                {% if user_abonnements %}
-                  <div class="col-sm-8">
-                  <h1><span class="badge bg-gradient-blue">Liste des abonnements actifs</span></h1>
-
+                <div class="row justify-content-md-center">
+                {% if user_requests %}
+                  <div class="col-md-4 justify-content-md-center">
+                      {% for user_request in user_requests %}
                     <div class="card">
                       <div class="card-body">
-                        <table class="table table-dark table-hover">
-                            {% for user_abonnement in user_abonnements %}
-                                    <tr style="{% if user_abonnement.status_abonnement == True %} background-color: #04bb33 {% else %} background-color: #e1052d {% endif %}">
-                                      <th scope="row">{{ user_abonnement.date_debut_abonnement }}</th>
-                                        <td>{{ user_abonnement.m_Parking.nom }}</td>
-                                      <td>{{ user_abonnement.m_Paiement.montant_payer }} FCFA</td>
-                                        {% if user_abonnement.type_abonnement == '1' %}
-                                      <td>Mensuel</td>
-                                        {% endif %}
-                                     {% if user_abonnement.type_abonnement == '3' %}
-                                      <td>Timestriel</td>
-                                        {% endif %}
-                                     {% if user_abonnement.type_abonnement == '6' %}
-                                      <td>Semestriel</td>
-                                        {% endif %}
-                                     {% if user_abonnement.type_abonnement == '12' %}
-                                      <td>Annuel</td>
-                                        {% endif %}
-                                        <td>{{ user_abonnement.date_fin_abonnement }}</td>
-                                    </tr>
-                                </tbody>
-                            {% endfor %}
-                        </table>
-
-
+                          <div class="container">
+                                  <h4 style="font-family: sans-serif"> {{ user_request.username}}</h4>
+                                  <img src="{% get_media_prefix %}{{ user_request.thumbnail }}" class="rounded" alt="..." style="width: 300px;height: 300px">
+                                   <a class="btn btn-lg btn-info " href="{{ user_request.thumbnail.url }}" download=""><i class="fa fa-download"></i>Download</a>
+                          </div>
                       </div>
                     </div>
+                  {% endfor %}
                   </div>
                 {% endif %}
-                </form>
             </div>
             </div>
     </section>

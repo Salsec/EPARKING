@@ -27,6 +27,7 @@ urlpatterns = [
     path('station_sortie/<str:signal>/', views.sortie_stationnement, name='station_sortie'),
     path('reservation_detail/<str:pk>/', views.reservation_qr_code, name='reservation_detail'),
     path('home', views.read_qr_code, name='home'),
+    path('huser_qr_code', views.user_qr_code, name='user_qr_code'),
     path('hom', views.station_recent, name='hom'),
     path('reserv', views.reservation_page, name='reserv'),
     path('systeme', views.systeme, name='systeme'),
