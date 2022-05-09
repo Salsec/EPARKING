@@ -1,6 +1,8 @@
 {% extends "new/base_site.html" %}
 {% load static %}
-
+<video loop muted autoplay playsinline class="video">
+  <source src="{% static 'parking.mp4' %}" type="video/mp4" />
+</video>
 {% block extrastyle %}{{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}">
 {{ form.media }}

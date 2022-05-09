@@ -15,17 +15,19 @@
                         <table class="table table-hover">
                             {% for station in stations %}
                                 <tbody>
-                                    <tr style="{% if station.m_Paiement == None %} background-color: #e1052d {% else %} background-color: #04bb33 {% endif %}">
+                                    <tr style="{% if station.m_Paiement == None and not abonnement_users and not reservation_users%} background-color: #e1052d {% else %} background-color: #04bb33 {% endif %}">
                                       <th scope="row">{{ station.numero_place }}</th>
                                         <td>{{ station.m_Parking.nom }}</td>
                                         {% if station.m_Paiement != None %}
                                       <td>{{ station.m_Paiement.montant_payer }} FCFA</td>
                                          {% endif %}
+                                            {% if station.m_Paiement == None and not abonnement_users and not reservation_users%}
                                          <td>
                                              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                                  <a class="btn btn-outline-primary btn-lg " href="{% url 'systeme:paiement' "1staion1" 1 station.m_Parking %}" role="button">Link</a>
                                              </div>
                                          </td>
+                                    {% endif %}
                                     </tr>
                                 </tbody>
                             {% endfor %}

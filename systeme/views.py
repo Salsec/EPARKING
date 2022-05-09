@@ -1,16 +1,9 @@
-import mimetypes
 from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 
-# Create your views here.
-from django.templatetags.static import get_media_prefix
-
-import users
-from EPARKING import settings
-from EPARKING.settings import MEDIA_URL
+import datetime
 from systeme.forms import ReservationForm, AbonnementForm, PaiementForm
 from systeme.models import Parking, Reservation, Stationnement, Gestion_reservation, Abonnement, Paiement
 from systeme.qrcode import read_qr_code
@@ -60,12 +53,22 @@ def station_recent(request):
 
 def systeme(request):
     places = creat_table()
-    stations = Stationnement.objects.filter(heure_entrer=date.today()).filter(heure_sortie=None)
+    stations = Stationnement.objects.filter(m_Paiement=None).filter(heure_sortie=None).filter(status_stationnement=True)
     context = {
         "places": places,
         "stations": stations
     }
     return render(request, 'system/home_content.html', context)
+
+
+def systeme_sortie(request):
+    places = creat_table()
+    stations_sorties = Stationnement.objects.filter(m_Paiement=not None).filter(status_stationnement=False)
+    context = {
+        "places": places,
+        "stations_sorties": stations_sorties
+    }
+    return render(request, 'system/sortie_station.html', context)
 
 
 def verif_date(z, n):
@@ -190,6 +193,7 @@ def paiement_page(request, signal, types, park):
                 tab, etat_place = place_vide()
                 for i in range(int(types)):
                     TT.append(str((tab[i]) + 1))
+                    etat_place[int(tab[i])] = "2"
                 paiement = Paiement.objects.create(montant_payer=somme, moyen_paiement=moyen_pay, numero=numero)
                 paiement.save()
                 if int(types) == 1:
@@ -197,6 +201,7 @@ def paiement_page(request, signal, types, park):
                                                              places_octroyer="".join(TT), m_User=request.user,
                                                              m_Parking=parking, m_Paiement=paiement)
                     reservation.save()
+                    Parking.objects.filter(id=parking.id).update(etat_place="".join(etat_place))
                     messages.success(request, 'Reservation effectuer avec succès')
                     return redirect('systeme:reserv')
                 else:
@@ -208,6 +213,7 @@ def paiement_page(request, signal, types, park):
                         etat_place[int(tab[i])] = '2'
                         gestion = Gestion_reservation.objects.create(code=tab[i] + 1, reservation_id=reservation)
                         gestion.save()
+                        Parking.objects.filter(id=parking.id).update(etat_place="".join(etat_place))
                     messages.success(request, 'Reservation effectuer avec succès')
                     return redirect('systeme:reserv', )
             elif signal == STATIONNEMENT:
@@ -307,16 +313,96 @@ def stationnement(request, signal):
                 messages.success(request, "INVALIDE QR CODE")
                 return redirect('systeme:systeme')
         else:
-            messages.success(request, "INVALIDE QR CODE")
             return redirect('systeme:systeme')
     return redirect('systeme:systeme')
 
+
 def stationnement_page(request):
     stations = Stationnement.objects.filter(m_User=request.user).filter(status_stationnement=True)
-    if stations:
-        ferty = stations.get(m_User=request.user)
-        derty = Reservation.objects.filter(m_User=ferty)
+    abonnement_users = Abonnement.objects.filter(m_User=request.user).filter(status_abonnement=True)
+    reservation_users = Reservation.objects.filter(m_User=request.user).filter(status=True)
     context = {
-        'stations': stations
+        'stations': stations,
+        'abonnement_users': abonnement_users,
+        'reservation_users': reservation_users
     }
     return render(request, 'system/stionnement_page.html', context)
+
+
+def sortie_stationnement(request, signal):
+    if signal == 0:
+        messages.error(request, "Mauvais réquette")
+        return redirect('systeme:systeme_sortie')
+    else:
+        qr = read_qr_code(signal)
+        if qr:
+            place_libre, etat_place = place_vide()
+            qrco_user_user = User.objects.filter(qr_id=qr)
+            qrco_user_gestios = Gestion_reservation.objects.filter(qr_code=qr).filter(status=True)
+            if qrco_user_user:
+                qrco_user = qrco_user_user.get(qr_code=qr)
+                stations = Stationnement.objects.filter(m_User=qrco_user).filter(status_stationnement=True)
+                abonnement_users = Abonnement.objects.filter(m_User=qrco_user).filter(status_abonnement=True)
+                reservation_users = Reservation.objects.filter(m_User=qrco_user).filter(status=True)
+                if stations and abonnement_users:
+                    stationnement_user = stations.get(m_User=qrco_user)
+                    abonnement_user = abonnement_users.get(m_User=qrco_user)
+                    etat_place[int(stationnement_user.numero_place) - 1] = '0'
+                    Parking.objects.filter(id=stationnement_user.m_Parking.id).update(etat_place="".join(etat_place))
+                    Stationnement.objects.filter(id=stationnement_user.id).update(status_stationnement=False,
+                                                                                  heure_sortie=datetime.datetime.now(),
+                                                                                  m_Paiement=abonnement_user.m_Paiement)
+                    messages.success(request, 'sortie de stationnement autorisé!!!!')
+                    return redirect("systeme:systeme_sortie")
+                elif (stations and not abonnement_users) or (stations and not reservation_users):
+                    stationnement_user = stations.get(m_User=qrco_user)
+                    if stationnement_user.m_Parking == None:
+                        messages.error(request, 'Veillez payer le stations en fin de pouvoir quitter')
+                        return redirect("systeme:systeme_sortie")
+                    else:
+                        etat_place[int(stationnement_user.numero_place) - 1] = '0'
+                        Parking.objects.filter(id=stationnement_user.m_Parking.id).update(
+                            etat_place="".join(etat_place))
+                        Stationnement.objects.filter(id=stationnement_user.id).update(status_stationnement=False,
+                                                                                      heure_sortie=datetime.datetime.now())
+                        messages.success(request, 'sortie de stationnement autorisé!!!!')
+                        return redirect("systeme:systeme_sortie")
+                elif stations and reservation_users:
+                    stationnement_user = stations.get(m_User=qrco_user)
+                    reservation_user = reservation_users.get(m_User=qrco_user)
+                    if reservation_user.nombre_place == 1:
+                        etat_place[int(stationnement_user.numero_place) - 1] = '2'
+                        Parking.objects.filter(id=stationnement_user.m_Parking.id).update(
+                            etat_place="".join(etat_place))
+                        Stationnement.objects.filter(id=stationnement_user.id).update(status_stationnement=False,
+                                                                                      heure_sortie=datetime.datetime.now(),
+                                                                                      m_Paiement=reservation_user.m_Paiement)
+                        messages.success(request, 'sortie de stationnement autorisé!!!!')
+                        return redirect("systeme:systeme_sortie")
+                    else:
+                        messages.info(request, "Veillez utiliser utiliser le qr code de l'entrer du stationnement!!!!")
+                        return redirect("systeme:systeme_sortie")
+                else:
+                    messages.error(request, "Impossible de quitter la ce stationnement, vous n'etes pas stationner")
+                    return redirect("systeme:systeme_sortie")
+            elif qrco_user_gestios:
+                qrco_user_gestion = qrco_user_gestios.get(qr_code=qr)
+                stations = Stationnement.objects.filter(m_User=qrco_user_gestion).filter(status_stationnement=True)
+                if stations:
+                    stationnement_user = stations.get(m_User=qrco_user_gestion)
+                    etat_place[int(stationnement_user.numero_place) - 1] = '2'
+                    Parking.objects.filter(id=stationnement_user.m_Parking.id).update(
+                        etat_place="".join(etat_place))
+                    Stationnement.objects.filter(id=stationnement_user.id).update(status_stationnement=False,
+                                                                                  heure_sortie=datetime.datetime.now(),
+                                                                                  m_Paiement=qrco_user_gestion.reservation_id.m_Paiement)
+                    messages.success(request, 'sortie de stationnement autorisé!!!!')
+                    return redirect("systeme:systeme_sortie")
+                else:
+                    messages.error(request, "Impossible de quitter la ce stationnement, vous n'etes pas stationner")
+                    return redirect("systeme:systeme_sortie")
+            else:
+                messages.error(request, "QR CODE INVALIDE")
+                return redirect("systeme:systeme_sortie")
+        else:
+            return redirect('systeme:systeme_sortie')
