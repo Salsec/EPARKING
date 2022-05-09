@@ -49,10 +49,17 @@ class SignupForm(forms.Form):
 
 
 class UpdateForm(forms.ModelForm):
-   class Meta:
+    class Meta:
        model = User
        exclude = ('password', 'password_conf') 
-       fields = ('email','username','first_name','last_name','telephone')
+       fields = ('email','username','first_name','last_name','telephone','password', 'password_conf')
+    email = forms.EmailField(widget=forms.EmailInput(attrs={"class": "form-control"}))
+    username = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
+    telephone = forms.IntegerField(widget=forms.NumberInput(attrs={"class": "form-control"}))
+    #password = forms.CharField(max_length=150, widget=forms.PasswordInput(attrs={"class": "form-control"}))
+   # password_conf = forms.CharField(max_length=150, widget=forms.PasswordInput(attrs={"class": "form-control"}))
 
 
 
