@@ -1,7 +1,7 @@
 {% extends 'system/base_template.html' %}
 {% load static %}
 <video loop muted autoplay playsinline class="video">
-  <source src="{% static 'user/parking.mp4' %}" type="video/mp4" />
+  <source src="{% get_static_prefix %}admin/i" type="video/mp4" />
 </video>
 {% block main_content %}
     <div class="wrapper">
