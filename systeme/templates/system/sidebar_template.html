@@ -1,22 +1,32 @@
 {% load static %}
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
+{% url 'systeme:station_entrer' 1 as station_entrer_url%}
+{% url 'systeme:station_sortie' 1 as station_sortie_url %}
+{% url 'systeme:systeme' as systeme %}
+{% url 'systeme:systeme_sortie' as systeme_sortie %}
       <a href="" class="brand-link">
-        <img src="{% static 'clients/dist/img/54474.jpg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+        <img src="{% static 'client/dist/img/54474.jpg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8">
-        <span class="brand-text font-weight-light">ENTRER PARKING</span>
+        <span class="brand-text font-weight-light">{% if request.path == systeme %}ENTRER PARKING {% endif %} {% if request.path == systeme_sortie %}SORTIE PARKING {% endif %}</span>
       </a>
       <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="col-3" style="margin-left: 50px">
-            <a href="{% url 'users:station' 1 %}" class="btn btn-lg badge-success">Stationner</a>
+              {% if request.path == systeme %}
+            <a href="{{ station_entrer_url  }}" class="btn btn-lg badge-primary">Stationner</a>
+              {% endif %}
+          {% if request.path == systeme_sortie %}
+            <a href="{{ station_sortie_url }}" class="btn btn-lg badge-primary">Sortirt</a>
+              {% endif %}
           </div>
         </div>
+      {% if request.path == systeme %}
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
                 {% for station in stations %}
-                  <div class="small-box bg-info">
+                  <div class="small-box" style="background: #5155BD">
                     <div class="inner">
                       <h4>PLACE N: {{ station.numero_place }}</h4>
                       <p>Ocuper par {{ station.m_User.first_name }} {{ station.m_User.last_name }}</p>
@@ -32,5 +42,28 @@
             </li>
           </ul>
         </nav>
+      {% endif %}
+      {% if request.path == systeme_sortie %}
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item">
+                {% for stations_sortie in stations_sorties %}
+                  <div class="small-box" style="background: #5155BD">
+                    <div class="inner">
+                      <h4>PLACE N: {{ stations_sortie.numero_place }}</h4>
+                      <p>Quitter par {{ stations_sortie.m_User.first_name }} {{ stations_sortie.m_User.last_name }}</p>
+                    </div>
+                    <div class="icon">
+                      <i class="fa fa-car"></i>
+                    </div>
+                    <a href="" class="small-box-footer">
+                        <i class='fas fa-sync-alt'></i>
+                    </a>
+                  </div>
+                {% endfor %}
+            </li>
+          </ul>
+        </nav>
+      {% endif %}
       </div>
     </aside>

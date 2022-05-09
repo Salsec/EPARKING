@@ -19,7 +19,8 @@ from django.conf.urls.static import static
 
 from EPARKING import settings
 from . import views
-
+from django.conf.urls.static import static
+from EPARKING import settings
 app_name = 'users'
 urlpatterns = [
     path('', views.login_page, name='login_page'),
@@ -30,4 +31,5 @@ urlpatterns = [
     path('gestionnaire/<int:id>/update', views.user_update, name='user-update'),
     path('gestionnaire/<int:id>/delete', views.user_delete, name='user-delete'),
     path('homee/<int:id>/update', views.user_update, name='update-mycompte'),
+
 ]

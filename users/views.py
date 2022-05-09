@@ -49,7 +49,6 @@ def admin_page(request):
         return render(request, 
                     'new/admin_page.html', 
                     context)
-
 # views.py
 def login_page(request):
     message = ''
@@ -64,7 +63,7 @@ def login_page(request):
                 elif user.is_staff:
                     return redirect('users:gestionnaire')
                 else:
-                    return redirect('users:homee')
+                    return redirect('systeme:stationnement_page')
             else:
                 message = messages.error(request, "Identifiants invalides!")
         else:

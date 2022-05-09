@@ -1,11 +1,14 @@
+import datetime
 import random
 from io import BytesIO
 
+import django
 import qrcode
-from PIL.Image import Image
+from PIL import Image, ImageDraw
 from django.contrib.auth.hashers import make_password
 from django.db import models
 from django.core.files import File
+from django.utils import timezone
 
 from users.models import User
 
@@ -30,13 +33,9 @@ class Parking(models.Model):
 
 
 class Paiement(models.Model):
-    CHOICES = [
-        ('1', 'Carte de crédit'),
-        ('2', 'Mobile monney'),
-        ('3', 'Compte banquaire'),
-    ]
     montant_payer = models.IntegerField(default=0)
-    moyen_paiement = models.CharField(max_length=60, choices=CHOICES)
+    moyen_paiement = models.CharField(max_length=60)
+    numero = models.IntegerField(default=0)
     date_paiement = models.DateTimeField(auto_now_add=True)
 
 
@@ -48,14 +47,16 @@ class Guichet(models.Model):
 
 class Stationnement(models.Model):
     numero_place = models.IntegerField(default=0)
-    heure_entrer = models.DateTimeField(auto_now_add=True, verbose_name="Heure d'entré")
+    heure_entrer = models.DateTimeField(default=timezone.now, blank = True,verbose_name="Heure d'entré")
     status_stationnement = models.BooleanField(default=True)
     heure_sortie = models.DateTimeField(blank=True, null=True, verbose_name='heure de sortie')
+    qr_code = models.CharField(max_length=1000, blank=True, null=True)
     m_Paiement = models.ForeignKey(Paiement, on_delete=models.CASCADE, null=True, blank=True)
-
     m_Parking = models.ForeignKey(Parking, on_delete=models.CASCADE, )
-
     m_User = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.m_User.username +" "+self.m_Parking.nom
 
 
 class Reservation(models.Model):
@@ -64,26 +65,19 @@ class Reservation(models.Model):
     places_octroyer = models.CharField(max_length=50, null=True, blank=True)
     date_reservation = models.DateTimeField(auto_now_add=True, blank=True)
     m_User = models.ForeignKey(User, on_delete=models.CASCADE)
-
     m_Parking = models.ForeignKey(Parking, on_delete=models.CASCADE)
-
     m_Paiement = models.ForeignKey(Paiement, null=True, blank=True, on_delete=models.CASCADE)
 
-    def create_reservation(self, *args, **kwargs):
-        pass
+
 
 
 class Abonnement(models.Model):
-
     date_debut_abonnement = models.DateTimeField(auto_now_add=True)
-    date_fin_abonnement = models.DateTimeField(blank=True, null=True)
+    date_fin_abonnement = models.DateField(null=True, blank=True)
     status_abonnement = models.BooleanField(default=False)
     type_abonnement = models.CharField(max_length=30, choices=CHOICES_TYPE)
-
     m_Parking = models.ForeignKey(Parking, on_delete=models.CASCADE)
-
     m_Paiement = models.ForeignKey(Paiement, blank=True, null=True, on_delete=models.CASCADE)
-
     m_User = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
@@ -92,7 +86,10 @@ class Gestion_reservation(models.Model):
     reservation_id = models.ForeignKey(Reservation, on_delete=models.CASCADE)
     status = models.BooleanField(default=True)
     qr_code = models.CharField(max_length=1000,  blank=True, null=True)
-    qr_image = models.ImageField(upload_to="reserv_code_qr", blank=True, null=True)
+    qr_image = models.ImageField(upload_to="reserv_code_qr", blank=True)
+
+    def __str__(self):
+        return self.reservation_id.m_User.username
 
     def save(self, *args, **kwargs):
         aleat = random.randint(0, 1000000)
@@ -100,6 +97,7 @@ class Gestion_reservation(models.Model):
         self.qr_code = make_password(infos, None, 'pbkdf2_sha256')
         qr_image = qrcode.make(self.qr_code)
         qr_offset = Image.new('RGB', (500, 500), 'white')
+        draw = ImageDraw.Draw(qr_offset)
         qr_offset.paste(qr_image)
         me = f'{self.id}-{aleat}qrcode'
         file_name = me + '.png'

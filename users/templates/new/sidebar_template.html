@@ -29,53 +29,52 @@
       </div>
     </div>
 
-    <!-- Sidebar Menu -->
-    <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <li class="nav-item">
-          <a href="" class="nav-link {% if request.path == homee %} active {% endif %}">
-            <i class='fas fa-car' style='font-size:24px'></i>
-            <p>
-              STATIONNEMENT
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          {% url 'systeme:reserv' as reservation_park %}
-          <a href="{{ reservation_park }}"
-            class="nav-link {% if request.path == reservation_park %} active {% endif %}">
-            <i class="nav-icon fas fa-chalkboard" style='font-size:24px'></i>
-            <p>
-              RESERVATION
-            </p>
-          </a>
-        </li>
+    <<<<<<< HEAD <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <li class="nav-item">
+            <a href="" class="nav-link {% if request.path == homee %} active {% endif %}">
+              <i class='fas fa-car' style='font-size:24px'></i>
+              <p>
+                STATIONNEMENT
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'systeme:reserv' as reservation_park %}
+            <a href="{{ reservation_park }}"
+              class="nav-link {% if request.path == reservation_park %} active {% endif %}">
+              <i class="nav-icon fas fa-chalkboard" style='font-size:24px'></i>
+              <p>
+                RESERVATION
+              </p>
+            </a>
+          </li>
 
-        <li class="nav-item">
-          {% url 'systeme:abonnement' as abonnement_url %}
-          <a href="{{ abonnement_url }}" class="nav-link {% if request.path == abonnement_url %} active {% endif %}">
-            <i class='fas fa-book' style='font-size:24px'></i>
-            <p>
-              ABONNEMENT
-            </p>
-          </a>
-        </li>
+          <li class="nav-item">
+            {% url 'systeme:abonnement' as abonnement_url %}
+            <a href="{{ abonnement_url }}" class="nav-link {% if request.path == abonnement_url %} active {% endif %}">
+              <i class='fas fa-book' style='font-size:24px'></i>
+              <p>
+                ABONNEMENT
+              </p>
+            </a>
+          </li>
 
+          <li class="nav-item">
 
-        <li class="nav-item">
+            <a href=""
+              class="nav-link {% if request.path == manage_subject %} active {% endif %} {% if request.path == edit_subject %} active {% endif %}">
+              <i class='far fa-money-bill-alt' style='font-size:24px'></i>
+              <p>
+                PAIEMENT
+              </p>
+            </a>
+          </li>
 
-          <a href=""
-            class="nav-link {% if request.path == manage_subject %} active {% endif %} {% if request.path == edit_subject %} active {% endif %}">
-            <i class='far fa-money-bill-alt' style='font-size:24px'></i>
-            <p>
-              PAIEMENT
-            </p>
-          </a>
-        </li>
-
-      </ul>
-    </nav>
-    <!-- /.sidebar-menu -->
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
   </div>
   <!-- /.sidebar -->
 </aside>

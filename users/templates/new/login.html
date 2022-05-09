@@ -8,19 +8,26 @@
 {% block branding1 %}
 <h1 id="site-name"><a href="{% url 'users:login_page' %}">{{ site_header|default:_('CONNEXION') }}</a></h1>
 {% endblock %}
-{% block bodyclass %}{{ block.super }} login{% endblock %}
+{% block bodyclass %}
+    {{ block.super }} login{% endblock %}
 
 
 
-{% block nav-global %}{% endblock %}
+{% block nav-global %}
 
-{% block nav-sidebar %}{% endblock %}
+{% endblock %}
+
+{% block nav-sidebar %}
+
+{% endblock %}
 
 {% block content_title %}
 
 {% endblock %}
 
-{% block breadcrumbs %}{% endblock %}
+{% block breadcrumbs %}
+
+{% endblock %}
 
 {% block content %}
 
