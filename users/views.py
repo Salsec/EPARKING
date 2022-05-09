@@ -1,8 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-
 
 from . import forms
 
@@ -38,8 +36,7 @@ def admin_page(request):
     else:
         form = forms.SignupForm()
     clients = User.objects.all().order_by('-id')
-    return render(request, 'new/admin_page.html',  context={'form': form, 'clients': clients})
-
+    return render(request, 'new/admin_page.html', context={'form': form, 'clients': clients})
 
 
 # views.py
@@ -89,7 +86,7 @@ def logout_user(request):
 
 
 def user_update(request, id):
-    is_update=True
+    is_update = True
     userUpdate = User.objects.get(id=id)
     if request.method == 'POST':
         form = forms.UpdateForm(request.POST, instance=userUpdate)
@@ -97,19 +94,18 @@ def user_update(request, id):
             form.save()
             return redirect('users:administrator')
     else:
-        form = forms.UpdateForm(instance=userUpdate)   
-    return render(request, 
-                'new/admin_page.html', 
-                context={'form': form, 'userUpdate':userUpdate, 'is_update':is_update})
+        form = forms.UpdateForm(instance=userUpdate)
+    return render(request,
+                  'new/admin_page.html',
+                  context={'form': form, 'userUpdate': userUpdate, 'is_update': is_update})
 
 
 def user_delete(request, id):
-    is_deleted=True
+    is_deleted = True
     userDelete = User.objects.get(id=id)
     if request.method == 'POST':
         userDelete.delete()
         return redirect('users:administrator')
-    return render(request, 
-                'new/admin_page.html',
-                context={'userDelete': userDelete,  'is_deleted':is_deleted,})
-
+    return render(request,
+                  'new/admin_page.html',
+                  context={'userDelete': userDelete, 'is_deleted': is_deleted, })
