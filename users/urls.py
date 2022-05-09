@@ -24,8 +24,9 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('homee/', views.acceil, name='homee'),
     path('logout_user/', views.logout_user, name='logout_user'),
-    path('administrator/', views.admin_page, name='administrator'),
-    path('administrator/<int:id>/update', views.user_update, name='user-update'),
-    path('administrator/<int:id>/delete', views.user_delete, name='user-delete'),
+    path('gestionnaire/', views.admin_page, name='gestionnaire'),
+    path('gestionnaire/<int:id>/update', views.user_update, name='user-update'),
+    path('gestionnaire/<int:id>/delete', views.user_delete, name='user-delete'),
+    path('homee/<int:id>/update', views.user_update, name='update-mycompte'),
 
 ]

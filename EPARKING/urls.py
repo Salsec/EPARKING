@@ -25,5 +25,6 @@ urlpatterns = [
     path('a@a@/', admin.site.urls, name='admin'),
     path('404/', views.re_404, name='404'),
     path('__debug__/', include('debug_toolbar.urls')),
+    #path('api-auth/', include('rest_framework.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect
 
 from . import forms
+from . import filters
 
 # Create your views here.
 from .forms import SignupForm, UpdateForm
@@ -20,23 +21,32 @@ def re_404(request):
 
 
 def admin_page(request):
-    if not request.user.is_authenticated:
-        return redirect('users:login_page')
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            user = User.objects.create_user(email=form.cleaned_data['email'],
-                                            username=form.cleaned_data['username'],
-                                            first_name=form.cleaned_data['first_name'],
-                                            last_name=form.cleaned_data['last_name'],
-                                            telephone=form.cleaned_data['telephone'], )
-            user.set_password(form.cleaned_data['password'])
-            user.save()
-            return redirect('users:administrator')
+    # s'il n'est pas gestionnaire alors il est utilisateur
+    if not request.user.is_staff:
+        return redirect('users:homee')
     else:
-        form = forms.SignupForm()
-    clients = User.objects.all().order_by('-id')
-    return render(request, 'new/admin_page.html', context={'form': form, 'clients': clients})
+        if not request.user.is_authenticated:
+            return redirect('users:login_page')
+        if request.method == 'POST':
+            form = SignupForm(request.POST)
+            if form.is_valid():
+                user = User.objects.create_user(email=form.cleaned_data['email'],
+                                                username=form.cleaned_data['username'],
+                                                first_name=form.cleaned_data['first_name'],
+                                                last_name=form.cleaned_data['last_name'],
+                                                telephone=form.cleaned_data['telephone'], )
+                user.set_password(form.cleaned_data['password'])
+                user.save()
+                return redirect('users:gestionnaire')
+        else:
+            form = forms.SignupForm()
+        clients = User.objects.all().order_by('-id')
+        myFilter = filters.UserFilter(request.GET, queryset=clients)
+        clients = myFilter.qs
+        context = {'form': form, 'clients': clients, 'myFilter': myFilter}
+        return render(request,
+                      'new/admin_page.html',
+                      context)
 
 
 # views.py
@@ -51,7 +61,7 @@ def login_page(request):
                 if user.is_superuser:
                     return redirect('admin:index')
                 elif user.is_staff:
-                    return redirect('users:administrator')
+                    return redirect('users:gestionnaire')
                 else:
                     return redirect('systeme:stationnement_page')
             else:
@@ -92,7 +102,7 @@ def user_update(request, id):
         form = forms.UpdateForm(request.POST, instance=userUpdate)
         if form.is_valid():
             form.save()
-            return redirect('users:administrator')
+            return redirect('users:gestionnaire')
     else:
         form = forms.UpdateForm(instance=userUpdate)
     return render(request,
@@ -105,7 +115,8 @@ def user_delete(request, id):
     userDelete = User.objects.get(id=id)
     if request.method == 'POST':
         userDelete.delete()
-        return redirect('users:administrator')
+
+        return redirect('users:gestionnaire')
     return render(request,
                   'new/admin_page.html',
                   context={'userDelete': userDelete, 'is_deleted': is_deleted, })
