@@ -50,7 +50,6 @@ def admin_page(request):
                     'new/admin_page.html', 
                     context)
 
-
 # views.py
 def login_page(request):
     message = ''
