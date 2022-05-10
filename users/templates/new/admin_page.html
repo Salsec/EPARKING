@@ -2,136 +2,154 @@
 
 {% block main_content %}
 
-    {% load static %}
+{% load static %}
 
-    <section class="content">
+<section class="content">
 
-        <div class="container-md">
-            {% if is_update %}
-                <div class="alert alert-warning" role="alert">
-                    <h1>Modification du compte de : {{ userUpdate.username }} </h1>
-                </div>
-                <form action="" method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <input type="submit" class="btn btn-primary btn-lg btn-block"
-                                       style=" margin-right: 10px;"
-                                       value="Enregistrer">
-                                <a href="{% url 'users:gestionnaire' %}" class="btn btn-primary btn-lg btn-block"
-                                   style="margin-right: 10px;">Annuler</a>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            {% elif is_deleted %}
-                <div class="alert alert-danger" role="alert">
-                    <h3>Etes-vous sûr de vouloir supprimer le compte de : {{ userDelete.username }} ?</h3>
-                </div>
-                <form action="" method="post">
-                    {% csrf_token %}
-                    <div class="row justify-content-md-center">
-                        <input type="submit" class="btn btn-outline-danger" value="Supprimer"
-                               style="margin-right: 10px;">
-                        <a href="{% url 'users:gestionnaire' %}" class="btn btn-outline-primary"
-                           style="margin-left: 10px;">Annuler</a>
-                    </div>
-                </form>
-            {% else %}
-                <!-- Small boxes (Stat box) -->
-                <div class="row">
-                <div class="col-7">
-                    <div class="alert alert-info" role="alert">
-                        <h3 class="text-center">Création de compte client</h3>
-                    </div>
-                    <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
-                        <div class="form-row">
-                            {{ form.email.errors }}
-                            {{ form.email.label_tag }} {{ form.email }}
-                        </div>
-                        <div class="form-row">
-                            {{ form.username.errors }}
-                            {{ form.username.label_tag }} {{ form.username }}
-                        </div>
-                        <div class="form-row">
-                            {{ form.first_name.errors }}
-                            {{ form.first_name.label_tag }} {{ form.first_name }}
-                        </div>
-
-                        <div class="form-row">
-                            {{ form.last_name.errors }}
-                            {{ form.last_name.label_tag }} {{ form.last_name }}
-                        </div>
-                        <div class="form-row">
-                            {{ form.telephone.errors }}
-                            {{ form.telephone.label_tag }} {{ form.telephone }}
-                        </div>
-                        <div class="form-row">
-                            {{ form.password.errors }}
-                            {{ form.password.label_tag }} {{ form.password }}
-                            <input type="hidden" name="next" value="{{ next }}">
-                        </div>
-                        <div class="form-row">
-                            {{ form.password_conf.errors }}
-                            {{ form.password.label_tag }} {{ form.password_conf }}
-                            <input type="hidden" name="next" value="{{ next }}">
-                        </div>
-                        {% url 'admin_password_reset' as password_reset_url %}
-                        {% if password_reset_url %}
-
-                        {% endif %}
-                        <div style="margin-top: 10px; margin-bottom: 10px;">
-                            <input type="submit" class="btn btn-info btn-lg btn-block" value="Enregistrer">
-                        </div>
-
-                    </form>
-                </div>
-                <!-- ./col -->
-
-                <div class="col-5">
-                    <div class="alert alert-info" role="alert">
-                        <h3 class="text-center">Liste des clients</h3>
-                    </div>
-                    <form action="" method="get">
-                        {{ myFilter.form }}
-                        <button type="submit" class="btn btn-primary btn-sm">Chercher</button>
-                    </form>
-                    <div class="overflow-auto" style=" height: 500px">
-                        {% for client in clients %}
-                            <div class="small-box bg-info">
-                                <div class="inner">
-                                    <h5>{{ client.username | upper }}</h5>
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-stats-bars"></i>
-                                </div>
-                                <div class="small-box-footer">
-                                    <a href="{% url 'users:user-update' client.id %}" class="btn btn-success btn-sm"
-                                       style="margin-right: 10px;">Modifier
-                                    </a>
-                                    <a href="{% url 'users:user-delete' client.id %} " class="btn btn-danger btn-sm"
-                                       style="margin-left: 10px;">Supprimer
-                                    </a>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
-            </div>
+    <div class="container-md">
+        {% if is_update %}
+        <div class="alert alert-warning" role="alert">
+            <h1>Modification du compte de : {{ userUpdate.username }} </h1>
         </div>
-    </section>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <input type="submit" class="btn btn-primary btn-lg btn-block" style=" margin-right: 10px;"
+                            value="Enregistrer">
+                        <a href="{% url 'users:gestionnaire' %}" class="btn btn-primary btn-lg btn-block"
+                            style="margin-right: 10px;">Annuler</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+        {% elif is_deleted %}
+        <div class="alert alert-danger" role="alert">
+            <h3>Etes-vous sûr de vouloir supprimer le compte de : {{ userDelete.username }} ?</h3>
+        </div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="row justify-content-md-center">
+                <input type="submit" class="btn btn-outline-danger" value="Supprimer" style="margin-right: 10px;">
+                <a href="{% url 'users:gestionnaire' %}" class="btn btn-outline-primary"
+                    style="margin-left: 10px;">Annuler</a>
+            </div>
+        </form>
+        {% else %}
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-7">
+                <div class="alert alert-info" role="alert">
+                    <h3 class="text-center">Création de compte client</h3>
+                </div>
+                <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+                    <div class="form-row">
+                        {{ form.email.errors }}
+                        {{ form.email.label_tag }} {{ form.email }}
+                    </div>
+                    <div class="form-row">
+                        {{ form.username.errors }}
+                        {{ form.username.label_tag }} {{ form.username }}
+                    </div>
+                    <div class="form-row">
+                        {{ form.first_name.errors }}
+                        {{ form.first_name.label_tag }} {{ form.first_name }}
+                    </div>
+
+                    <div class="form-row">
+                        {{ form.last_name.errors }}
+                        {{ form.last_name.label_tag }} {{ form.last_name }}
+                    </div>
+                    <div class="form-row">
+                        {{ form.telephone.errors }}
+                        {{ form.telephone.label_tag }} {{ form.telephone }}
+                    </div>
+                    <div class="form-row">
+                        {{ form.password.errors }}
+                        {{ form.password.label_tag }} {{ form.password }}
+                        <input type="hidden" name="next" value="{{ next }}">
+                    </div>
+                    <div class="form-row">
+                        {{ form.password_conf.errors }}
+                        {{ form.password.label_tag }} {{ form.password_conf }}
+                        <input type="hidden" name="next" value="{{ next }}">
+                    </div>
+                    {% url 'admin_password_reset' as password_reset_url %}
+                    {% if password_reset_url %}
+
+                    {% endif %}
+                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                        <input type="submit" class="btn btn-info btn-lg btn-block" value="Enregistrer">
+                    </div>
+
+                </form>
+            </div>
+            <!-- ./col -->
+
+            <div class="col-5">
+                <div class="alert alert-info" role="alert">
+                    <h3 class="text-center">Liste des clients</h3>
+                </div>
+                <form action="" method="get">
+                    {{ myFilter.form }}
+                    <button type="submit" class="btn btn-primary btn-sm">Chercher</button>
+                </form>
+                <div class="overflow-auto" style=" height: 500px">
+                    {% for client in clients %}
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h5>{{ client.username | upper }}</h5>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <div class="small-box-footer">
+                            <a href="{% url 'users:user-update' client.id %}" class="btn btn-success btn-sm"
+                                style="margin-right: 10px;">Modifier
+                            </a>
+                            <a href="{% url 'users:user-delete' client.id %} " class="btn btn-danger btn-sm"
+                                style="margin-left: 10px;">Supprimer
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
 
 
 
 {% endblock main_content %}
 
 {% block custom_js %}
-
-    <script>
-
-    </script>
-
+{% for message in messages %}
+{% if message.tags != info %}
+<script>
+    Swal.fire({
+        position: 'center',
+        icon: '{{ message.tags }}',
+        title: '{{ message }}',
+        showConfirmButton: false,
+        timer: 5000
+    })
+</script>
+{% else %}
+<script>
+    Swal.fire({
+        title: 'Custom animation with Animate.css',
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        }
+    })
+</script>
+{% endif %}
+{% endfor %}
 {% endblock custom_js %}

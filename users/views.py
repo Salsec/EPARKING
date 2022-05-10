@@ -23,7 +23,7 @@ def re_404(request):
 def admin_page(request):
     # s'il n'est pas gestionnaire alors il est utilisateur
     if not request.user.is_staff:
-        return redirect('users:homee')
+        return redirect('systeme:stionnement_page')
     else:
         if not request.user.is_authenticated:
             return redirect('users:login_page')
@@ -37,6 +37,7 @@ def admin_page(request):
                                                 telephone=form.cleaned_data['telephone'], )
                 user.set_password(form.cleaned_data['password'])
                 user.save()
+                message = messages.success(request, "Compte créer avec succès.")
                 return redirect('users:gestionnaire')
         else:
             form = forms.SignupForm()
@@ -102,7 +103,9 @@ def user_update(request, id):
         form = forms.UpdateForm(request.POST, instance=userUpdate)
         if form.is_valid():
             form.save()
+            message = messages.success(request, "Compte modifié avec succès.")
             return redirect('users:gestionnaire')
+           
     else:
         form = forms.UpdateForm(instance=userUpdate)
     return render(request,
@@ -115,7 +118,7 @@ def user_delete(request, id):
     userDelete = User.objects.get(id=id)
     if request.method == 'POST':
         userDelete.delete()
-
+        message = messages.success(request, "Client(e) supprimé(e) avec succès!")
         return redirect('users:gestionnaire')
     return render(request,
                   'new/admin_page.html',
