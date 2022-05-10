@@ -1,79 +1,78 @@
 {% load static %}
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-  <!-- Brand Logo -->
-  {% if request.user.is_staff %}
-  <a href="url: 'gestionnaire' " class="brand-link">
-    <img src="{% static 'client/dist/img/54474.jpg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-      style="opacity: .8">
-    <span class="brand-text font-weight-light">GESTIONNAIRE</span>
-  </a>
-  {%else%}
-  <a href="" class="brand-link">
-    <img src="{% static 'client/dist/img/54474.jpg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-      style="opacity: .8">
-    <span class="brand-text font-weight-light">CLIENT</span>
-  </a>
-  {%endif%}
+    <!-- Brand Logo -->
+{% url 'systeme:stationnement_page' as stationnement_page_url %}
+    {% if request.user.is_staff %}
+        <a href="{% url 'users:gestionnaire' %} " class="brand-link">
+            <img src="{% static 'client/dist/img/54474.jpg' %}" alt="AdminLTE Logo"
+                 class="brand-image img-circle elevation-3"
+                 style="opacity: .8">
+            <span class="brand-text font-weight-light">GESTIONNAIRE</span>
+        </a>
+    {% else %}
+        <a href="{{ stationnement_page_url }}" class="brand-link">
+            <img src="{% static 'client/dist/img/54474.jpg' %}" alt="AdminLTE Logo"
+                 class="brand-image img-circle elevation-3"
+                 style="opacity: .8">
+            <span class="brand-text font-weight-light">CLIENT</span>
+        </a>
+    {% endif %}
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <!-- Sidebar user panel (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="image">
-        <img src="{% static 'client/dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
-      </div>
-      <div class="info">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="{% static 'client/dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2"
+                     alt="User Image">
+            </div>
+            <div class="info">
 
-        <a href="{% url 'users:update-mycompte' user.id %}" class="d-block">{{ user.first_name }} {{user.last_name}}</a>
-      </div>
+                <a href="{% url 'users:update-mycompte' user.id %}"
+                   class="d-block">{{ user.first_name }} {{ user.last_name }}</a>
+            </div>
+        </div>
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+
+                    <a href="{{ stationnement_page_url }}"
+                       class="nav-link {% if request.path == stationnement_page_url %} active {% endif %}">
+                        <i class='fas fa-car' style='font-size:24px'></i>
+                        <p>
+                            STATIONNEMENT
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    {% url 'systeme:reserv' as reservation_park %}
+                    <a href="{{ reservation_park }}"
+                       class="nav-link {% if request.path == reservation_park %} active {% endif %}">
+                        <i class="nav-icon fas fa-chalkboard" style='font-size:24px'></i>
+                        <p>
+                            RESERVATION
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    {% url 'systeme:abonnement' as abonnement_url %}
+                    <a href="{{ abonnement_url }}"
+                       class="nav-link {% if request.path == abonnement_url %} active {% endif %}">
+                        <i class='fas fa-book' style='font-size:24px'></i>
+                        <p>
+                            ABONNEMENT
+                        </p>
+                    </a>
+                </li>
+
+
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
     </div>
-    <!-- Sidebar Menu -->
-    <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <li class="nav-item">
-          <a href="" class="nav-link {% if request.path == homee %} active {% endif %}">
-            <i class='fas fa-car' style='font-size:24px'></i>
-            <p>
-              STATIONNEMENT
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          {% url 'systeme:reserv' as reservation_park %}
-          <a href="{{ reservation_park }}"
-            class="nav-link {% if request.path == reservation_park %} active {% endif %}">
-            <i class="nav-icon fas fa-chalkboard" style='font-size:24px'></i>
-            <p>
-              RESERVATION
-            </p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          {% url 'systeme:abonnement' as abonnement_url %}
-          <a href="{{ abonnement_url }}" class="nav-link {% if request.path == abonnement_url %} active {% endif %}">
-            <i class='fas fa-book' style='font-size:24px'></i>
-            <p>
-              ABONNEMENT
-            </p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-
-          <a href=""
-            class="nav-link {% if request.path == manage_subject %} active {% endif %} {% if request.path == edit_subject %} active {% endif %}">
-            <i class='far fa-money-bill-alt' style='font-size:24px'></i>
-            <p>
-              PAIEMENT
-            </p>
-          </a>
-        </li>
-
-      </ul>
-    </nav>
-    <!-- /.sidebar-menu -->
-  </div>
-  <!-- /.sidebar -->
+    <!-- /.sidebar -->
 </aside>

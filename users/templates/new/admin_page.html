@@ -80,10 +80,7 @@
                         </div>
                         {% url 'admin_password_reset' as password_reset_url %}
                         {% if password_reset_url %}
-                            <div class="password-reset-link">
-                                {# <a
-                                    href="{{ password_reset_url }}">{% translate 'Forgotten your password or username?'%}</a>#}
-                            </div>
+
                         {% endif %}
                         <div style="margin-top: 10px; margin-bottom: 10px;">
                             <input type="submit" class="btn btn-info btn-lg btn-block" value="Enregistrer">
